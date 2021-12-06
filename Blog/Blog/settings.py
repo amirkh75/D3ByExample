@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # local
     'upload',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +124,7 @@ USE_L10N = True
 USE_TZ = True
 
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Default primary key field type
