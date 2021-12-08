@@ -54,6 +54,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'users.backends.CustomUserBackend',
+]
+
 ROOT_URLCONF = 'Blog.urls'
 
 TEMPLATES = [
@@ -125,7 +130,8 @@ USE_TZ = True
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
-
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

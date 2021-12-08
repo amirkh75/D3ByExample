@@ -1,0 +1,30 @@
+
+<h2>Login Form</h2>
+<div>
+    <ul class="menu">
+      {% if request.user.is_authenticated %}
+      <li><a href="{% url "users:logout" %}">log out- {{ request.user.email }}</a></li>
+        
+      {% else %}
+        <li><a href="{% url "users:login" %}">log in</a></li>
+        <li><a href="{% url "users:signup" %}">sign up</a></li>
+      {% endif %}
+    </ul>
+  </div>
+<form method="post">
+  {% csrf_token %}
+  {% for field in form %}
+    <p>
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+      {% endif %}
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+    </p>
+  {% endfor %}
+  <button type="submit">Login</button>
+</form>
+
