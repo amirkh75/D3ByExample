@@ -1,0 +1,12 @@
+<h2>Home</h2>
+<div>
+    <ul class="menu">
+      {% if request.user.is_authenticated %}
+      <li><a href="{% url "users:logout" %}">log out- {{ request.user.email }}</a></li>
+        
+      {% else %}
+        <li><a href="{% url "users:login" %}">log in</a></li>
+        <li><a href="{% url "users:signup" %}">sign up</a></li>
+      {% endif %}
+    </ul>
+  </div>

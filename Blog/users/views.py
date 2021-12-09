@@ -1,6 +1,7 @@
 from django.shortcuts import render, render, redirect
 from django.contrib.auth import login,logout, authenticate
 from .forms import SignUpForm, LoginForm
+from django.urls import reverse
 import sys
 
 
@@ -15,7 +16,7 @@ def signup_view(request):
         password = form.cleaned_data.get('password1')
         user = authenticate(email=email, password=password)
         login(request, user)
-        return redirect('home')
+        return redirect(reverse('pages:home'))
     else:
         form = SignUpForm()
     return render(request, 'users/signup.html', {'form': form})
@@ -35,7 +36,7 @@ def login_view(request):
         if user is not None:
             print(sys.stderr, user.email)
             login(request, user, backend='users.backends.CustomUserBackend')
-        return redirect('home')
+        return redirect(reverse('pages:home'))
     else:
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})
@@ -44,5 +45,5 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('upload')
+    return redirect(reverse('users:login'))
 
