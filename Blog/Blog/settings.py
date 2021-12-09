@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'upload',
     'users',
     'pages',
+    'posts',
 ]
 
 MIDDLEWARE = [

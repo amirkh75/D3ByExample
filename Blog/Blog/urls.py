@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls'), name='users'),
     path('image-upload', image_upload, name='image_upload'),
+    path('posts/', include('posts.urls'), name='posts'),
     path('', include('pages.urls'), name='home'),
 ]
 
