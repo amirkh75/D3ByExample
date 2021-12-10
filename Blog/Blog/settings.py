@@ -28,6 +28,7 @@ DEBUG = int(os.environ.get('DEBUG'))
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 
+SITE_ID = 1
 
 # Application definition
 
@@ -38,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # build in
+  #  'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     #third-party packages
     'taggit',

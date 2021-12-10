@@ -30,10 +30,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.email}-{self.bio}'
-"""
+
 @receiver(post_save, sender=CustomUser)
 def update_profile_signal(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
-"""
