@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # build in
   #  'django.contrib.sites',
     'django.contrib.sitemaps',
+    'django.contrib.postgres',
 
     #third-party packages
     'taggit',
