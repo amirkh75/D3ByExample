@@ -1,0 +1,20 @@
+{% extends "posts/base.html" %}
+{% load posts_tags %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+  <h1>My Blog</h1>
+  {% for CustomUser in CustomUsers %}
+    <h2>
+      <a href="{% url "users:user" CustomUser.id %}">
+        {% if CustomUser.profile.first_name %}
+          {{ CustomUser.profile.first_name }} {{ CustomUser.profile.last_name }} 
+        {% else %}
+          {{ CustomUser.email }}
+        {% endif %}
+        date joined us : {{ CustomUser.date_joined }}
+      </a>
+  {% endfor %}
+  {% include "pagination.html" with page=page_obj %}
+{% endblock %}

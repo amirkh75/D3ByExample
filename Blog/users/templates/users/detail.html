@@ -1,0 +1,11 @@
+{% extends "posts/base.html" %}
+{% load posts_tags %}
+
+{% block title %}Our Blog{% endblock %}
+
+{% block content %}
+    <h1>user page</h1>
+    <h2> {{ CustomUser.profile.first_name }} {{ CustomUser.profile.last_name }}</h2>
+    <p> {{ CustomUser.email }} - date joined us : {{ CustomUser.date_joined }}</p>
+    <p> {{ CustomUser.profile.bio }}</p>
+{% endblock %}

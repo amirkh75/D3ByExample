@@ -21,7 +21,7 @@ urlpatterns = [
     path('posts/', include('posts.urls'), name='posts'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
      name='django.contrib.sitemaps.views.sitemap'),
-    path('', include('pages.urls'), name='home'),
+    path('', include('pages.urls'), name='pages'),
 ]
 
 if bool(settings.DEBUG):

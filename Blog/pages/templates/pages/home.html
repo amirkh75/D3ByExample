@@ -1,5 +1,9 @@
-<h2>Home</h2>
-<div>
+{% extends "posts/base.html" %}
+
+{% block title %}<h2>Home</h2>{% endblock %}
+
+{% block content %}
+  <div>
     <ul class="menu">
       {% if request.user.is_authenticated %}
       <li><a href="{% url "users:logout" %}">log out- {{ request.user.email }}</a></li>
@@ -10,3 +14,4 @@
       {% endif %}
     </ul>
   </div>
+  {% endblock %}

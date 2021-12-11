@@ -1,9 +1,12 @@
-from django.shortcuts import render, render, redirect
+from django.shortcuts import render, render, redirect, get_object_or_404
 from django.contrib.auth import login,logout, authenticate
-from .forms import SignUpForm, LoginForm
 from django.urls import reverse
+from django.views.generic import ListView, DetailView
 import sys
 
+
+from .forms import SignUpForm, LoginForm
+from .models import CustomUser
 
 def profile_view(request):
     return render(request, 'profile.html')
@@ -47,3 +50,17 @@ def logout_view(request):
     logout(request)
     return redirect(reverse('users:login'))
 
+
+class UsersListView(ListView):
+
+    queryset =CustomUser.objects.all()
+    context_object_name = 'CustomUsers'
+    paginate_by = 10
+    template_name = 'users/list.html'
+
+
+class UsersDetailView(DetailView):
+
+    context_object_name = 'CustomUser'
+    queryset = CustomUser.objects.all()
+    template_name = 'users/detail.html'

@@ -14,14 +14,30 @@
   <div id="sidebar">
     <h2>notes</h2>
     {% if request.user.is_authenticated %}
-      <p> Hi {{ request.user.profile.first_name }} {{request.user.profile.last_name }}
-        <a href="{% url "users:logout" %}">log out</a>
+      <a href="{% url "users:user" request.user.id %}">
+        <p> Hi {{ request.user.profile.first_name }} {{request.user.profile.last_name }}
+      </a>
       </p>
+      <a href="{% url "users:logout" %}">log out</a>
       {% else %}
         <a href="{% url "users:login" %}">log in</a>
         <a href="{% url "users:signup" %}">sign up</a>
       {% endif %}
     <p>This  is our blog. We have written {% total_posts %} posts so far.</p>
+    <ul>
+      <li>
+        <a href="{% url "pages:home" %}">home</a>
+      </li>
+      <li>
+        <a href="{% url "posts:post_list" %}">list</a>
+      </li>
+      <li>
+        <a href="{% url "users:user_list" %}">users</a>
+      </li>
+      <li>
+        <a href="{% url "posts:post_search" %}">search</a>
+      </li>    
+    </ul> 
     <h3>Latest posts</h3>
     {% show_latest_posts  3 %}
     <h3>Most commented posts</h3>
@@ -32,7 +48,7 @@
           <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
         </li>
       {% endfor %}
-    </ul> 
+    </ul>
   </div>
 </body>
 </html>
