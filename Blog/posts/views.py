@@ -7,7 +7,7 @@ from taggit.models import Tag
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib.postgres.search import TrigramSimilarity
-
+import sys
 
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm, SearchForm
@@ -43,24 +43,36 @@ def post_list(request):
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, status='published', publish__year=year, publish__month=month, publish__day=day , slug=post)
     
-    comments = post.comments.filter(active=True)
+    objects_list = post.comments.filter(active=True).order_by('id')
+    paginator = Paginator(objects_list, 4)
+    page = request.GET.get('page', 1)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages) # if out of the range deliver last page instead.
+    print(sys.stderr, page)
+
     new_comment = None
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
+            new_comment.name = request.user.profile.first_name
+            new_comment.email = request.user.email
             new_comment.post = post
             new_comment.save()
     else:
-        comment_form = CommentForm(initial={'name': f'{request.user.profile.first_name}','email': f'{request.user.email}'})
+        comment_form = CommentForm()
     post_tags_ids = post.tags.values_list('id', flat=True)
     similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
     similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
     return render(request, 'posts/post/detail.html',
                     {'post': post,'comments': comments,
                      'new_comment': new_comment, 'comment_form': comment_form,
-                      'similar_posts': similar_posts}) 
+                      'similar_posts': similar_posts,'page': page}) 
 
 
 def post_share(request, post_id):
