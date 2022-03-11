@@ -88,7 +88,8 @@ def login_view(request):
         if user is not None:
             print(sys.stderr, user.email)
             login(request, user, backend='users.backends.CustomUserBackend')
-        return redirect(reverse('pages:home'))
+            return redirect('pages:home')
+        return render(request, 'users/login.html', {'form': form, 'error_message': 'Email or Password is wrong!'})
     else:
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})

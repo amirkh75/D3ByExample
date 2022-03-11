@@ -1,5 +1,45 @@
 
-<h2>Sign up Form</h2>
+{% extends "posts/base.html" %}
+
+{% block title %}Log in{% endblock %}
+
+
+{% block content %}
+
+<div class="container m-2">
+  <form action="{% url 'users:login' %}" method="post">
+      {% csrf_token %}
+      <div class="col-10">
+          <div class="panel panel-default">
+              <div class="panel-heading m-3 ">Singup</div>
+              <div class="panel-body">
+                {% for field in form %}
+                <p>
+                  {{ field.label_tag }}<br>
+                  {{ field }}
+                  {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                  {% endfor %}
+                </p>
+              {% endfor %}
+                  <div class="col-md-6 col-md-offset-4 m-1">
+                      <input name="signup" type="submit" value="signup" class="btn btn-success" /> &nbsp;
+                      <a href="{% url 'users:login' %}">or Login</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </form>
+</div>
+
+
+
+{% endblock %}  
+
+<!-- <h2>Sign up Form</h2>
 <div>
   <ul class="menu">
     {% if request.user.is_authenticated %}
@@ -27,4 +67,4 @@
   {% endfor %}
   <button type="submit">Sign up</button>
 </form>
-
+ -->

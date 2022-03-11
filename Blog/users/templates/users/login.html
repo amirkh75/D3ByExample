@@ -1,16 +1,63 @@
+{% extends "posts/base.html" %}
 
-<h2>Login Form</h2>
-<div>
-    <ul class="menu">
-      {% if request.user.is_authenticated %}
-      <li><a href="{% url "users:logout" %}">log out- {{ request.user.email }}</a></li>
-        
-      {% else %}
-        <li><a href="{% url "users:login" %}">log in</a></li>
-        <li><a href="{% url "users:signup" %}">sign up</a></li>
-      {% endif %}
-    </ul>
-  </div>
+{% block title %}Log in{% endblock %}
+
+
+{% block content %}
+
+<div class="container m-1">
+  <form action="{% url 'users:login' %}" method="post">
+      {% csrf_token %}
+      <div class="col-10">
+          <div class="panel panel-default">
+              <div class="panel-heading m-3">Login</div>
+              <div class="panel-body">
+                  {% if error_message %}
+                      <p class="bg-gradient ">{{ error_message }}</p>
+                  {% endif %}
+                  <div class="form-group clearfix">
+                      <label for="email" class="col-6 control-label text-right">Email:</label>
+                      <div class="col-6">
+                          <input name="email" value="" type="text" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="form-group clearfix">
+                      <label for="password" class="col-6 control-label text-right">Password:</label>
+                      <div class="col-6">
+                          <input name="password" type="password" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="col-md-6 col-md-offset-4 m-1">
+                      <input name="login" type="submit" value="Login" class="btn btn-success" /> &nbsp;
+                      <a href="{% url 'users:signup' %}">or Signup</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </form>
+</div>
+
+
+
+{% endblock %}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <form method="post">
   {% csrf_token %}
   {% for field in form %}
@@ -26,5 +73,4 @@
     </p>
   {% endfor %}
   <button type="submit">Login</button>
-</form>
-
+</form> -->

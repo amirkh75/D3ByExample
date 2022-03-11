@@ -25,9 +25,19 @@
 
 {% block content %}
 
+  <h3>Home</h3>
 
-<h3>Home</h3>
-
+  {%  get_latest_posts as latest_posts  %}
+      <ul>
+        {% for post in latest_posts %}
+          <li>
+            <div class="border p-1 m-3">
+              <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+              <p> {{ post.body }} </p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
 
 {% endblock %}  
 
