@@ -1,7 +1,7 @@
 {% extends "posts/base.html" %}
 {% load posts_tags %}
 
-{% block title %}Hi there{% endblock %}
+{% block title %}welcome{% endblock %}
 
 {% block sidebar %}
 <div class="sticky-top text-muted bg-light border p-1">
@@ -25,7 +25,7 @@
 
 {% block content %}
 
-  <h3>Home</h3>
+  <h3 class="m-3 p-1 accordion-header ">top five</h3>
 
   {%  get_latest_posts as latest_posts  %}
       <ul>

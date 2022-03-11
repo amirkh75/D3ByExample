@@ -31,9 +31,11 @@
                       <input name="login" type="submit" value="Login" class="btn btn-success" /> &nbsp;
                       <a href="{% url 'users:signup' %}">or Signup</a>
                   </div>
+                  <input type="hidden" name="next" value="{{ request.GET.next }}"/>
               </div>
           </div>
       </div>
+      
   </form>
 </div>
 

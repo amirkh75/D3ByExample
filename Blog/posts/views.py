@@ -1,5 +1,5 @@
 from django.core import paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from django.core.mail import send_mail
@@ -8,12 +8,18 @@ from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib.postgres.search import TrigramSimilarity
 import sys
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import datetime
+from django.views import View
+
 
 from .models import Post, Comment
-from .forms import EmailPostForm, CommentForm, SearchForm
+from .forms import EmailPostForm, CommentForm, SearchForm, PostCreateForm
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
+    login_url = 'users:login'
 
     def get_queryset(self):
         if self.kwargs:
@@ -28,6 +34,7 @@ class PostListView(ListView):
     template_name = 'posts/post/list.html'
 
 
+@login_required
 def post_list(request):
     objects_list = Post.published.all()
     paginator = Paginator(objects_list, 6)
@@ -40,6 +47,8 @@ def post_list(request):
         posts = paginator.page(paginator.num_pages) # if out of the range deliver last page instead.
     return render(request, 'posts/post/list.html', {'page': page, 'posts': posts})
 
+
+@login_required
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, status='published', publish__year=year, publish__month=month, publish__day=day , slug=post)
     
@@ -75,6 +84,8 @@ def post_detail(request, year, month, day, post):
                       'similar_posts': similar_posts,'page': page}) 
 
 
+
+@login_required
 def post_share(request, post_id):
     post = get_object_or_404(Post, id=post_id, status='published')
     sent = False
@@ -93,6 +104,9 @@ def post_share(request, post_id):
         form = EmailPostForm(initial={'name': f'{request.user.profile.first_name} {request.user.profile.last_name}','email': request.user.email})
     return render(request, 'posts/post/share.html',{'post': post, 'form': form, 'sent':sent})
 
+
+
+@login_required
 def post_search(request):
     form = SearchForm()
     query = None
@@ -115,3 +129,27 @@ def post_search(request):
                   {'form': form,
                    'query': query,
                    'results': results})
+
+
+class PostCreateView(LoginRequiredMixin, View):
+    """Create new post"""
+    form_class = PostCreateForm
+    template_name = 'posts/post/create.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            post_ = form.save(commit=False)
+            post_.date_modified = datetime.now()
+            post_.created = datetime.now()
+            post_.updated = datetime.now()
+            post_.status = 'published'
+            post_.author = request.user
+            post_.save()
+            return redirect(post_.get_absolute_url())  
+
+        return render(request, self.template_name, {'form': form})

@@ -4,6 +4,7 @@ from django.utils.translation import activate
 from users.models import CustomUser
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from django.template.defaultfilters import slugify
 
 
 class PublishedManager(models.Manager):
@@ -37,6 +38,14 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('posts:post_detail', args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
+    
+    def save(self, *args, **kwargs): # new
+        if not self.slug:
+            self.slug = slugify(self.title)
+            while Post.objects.filter(slug=self.slug).count() != 0:
+                self.slug = self.slug + str(Post.objects.filter(slug=self.slug).count())
+
+        return super().save(*args, **kwargs)
 
 
 class Comment(models.Model):

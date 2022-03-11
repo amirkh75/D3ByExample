@@ -1,0 +1,19 @@
+{% extends "posts/base.html" %}
+{% load posts_tags %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label  class="form-label">Titel</label>
+            <input type="text" name="title" class="form-control" placeholder="...">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Body</label>
+            <textarea class="form-control" name="body" rows="14"></textarea>
+        </div>
+        <button type="submit" value="Add comment" class="btn btn-success">Add post</button>
+    </form>
+{% endblock %}

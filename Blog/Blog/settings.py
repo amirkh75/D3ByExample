@@ -139,6 +139,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+from django.urls import reverse_lazy
+
+LOGIN_URL = reverse_lazy('users:login')
+
 
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = 'pages/home'

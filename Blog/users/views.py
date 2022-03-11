@@ -1,4 +1,4 @@
-from django.shortcuts import render, render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login,logout, authenticate
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
@@ -76,6 +76,7 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 # /////////////////////////////////////////////////////////////////////
 def login_view(request):
+    redirect_to = request.POST.get('next', '/')
     form = LoginForm(data = request.POST)
     if form.is_valid():
         email = form.cleaned_data.get('email')
@@ -88,7 +89,7 @@ def login_view(request):
         if user is not None:
             print(sys.stderr, user.email)
             login(request, user, backend='users.backends.CustomUserBackend')
-            return redirect('pages:home')
+            return redirect(redirect_to)  
         return render(request, 'users/login.html', {'form': form, 'error_message': 'Email or Password is wrong!'})
     else:
         form = LoginForm()

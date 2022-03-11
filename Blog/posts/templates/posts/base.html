@@ -17,6 +17,12 @@
     body {
       background: url('{% static "white-concrete-wall.jpg" %}') no-repeat fixed;
     }
+    a {
+      text-decoration: none;
+    }
+    ul {
+      list-style-type: none;
+    }
   </style>
 
 </head>
@@ -42,6 +48,9 @@
           </li>
           <li>
             <a class="nav-link" href="{% url "posts:post_list" %}">Posts</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{% url "posts:post_create" %}">PostCreate</a>
           </li>
           {% if request.user.is_authenticated %}
             <li class="nav-item">
