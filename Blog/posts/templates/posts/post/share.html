@@ -11,9 +11,16 @@
   {% else %}
     <h1>Share "{{ post.title }}" by e-mail</h1>
     <form method="post">
-      {{ form.as_p }}
       {% csrf_token %}
-      <input type="submit" value="Send e-mail">
+      <div class="mb-3">
+          <label  class="form-label">To:</label>
+          <input type="text" name="to" class="form-control" placeholder="example@email.com">
+      </div>
+      <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Comment</label>
+          <textarea class="form-control" name="comment" rows="8"></textarea>
+      </div>
+      <button type="submit" value="Share post" class="btn btn-success">Share post</button>
     </form>
   {% endif %}
 {% endblock %}

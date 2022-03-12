@@ -45,7 +45,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
     context_object_name = 'posts'
     paginate_by = 3
-    template_name = 'posts/post/commentedPostList.html'
+    template_name = 'posts/post/list.html'
 
 class UserCommentedPostListView(LoginRequiredMixin, ListView):
     """All post Commented from a certain user"""
@@ -57,6 +57,7 @@ class UserCommentedPostListView(LoginRequiredMixin, ListView):
 
 
     context_object_name = 'comments'
+    paginate_by = 3
     template_name = 'posts/post/commentedPostList.html'
 
 @login_required
@@ -122,8 +123,8 @@ def post_share(request, post_id):
         if form.is_valid():
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = f"{cd['name']} recommends you read {post.title}"
-            message = f"Read {post.title} at {post_url}\n\n {cd['name']}\'s email is: {cd['email']} \n\n {cd['name']}\'s comments: {cd['comments']}"
+            subject = f"{request.user.email} recommends you read {post.title}"
+            message = f"Read {post.title} at {post_url}\n\n {request.user.profile.first_name}\'s email is: {request.user.email} \n\n {request.user.email}\'s comments: {cd['comments']}"
             send_mail(subject, message, 'python.codes.site@gmail.com', [cd['to']])
             sent = True
 

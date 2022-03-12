@@ -1,7 +1,7 @@
 
 from django.urls import path
 from django.conf.urls import url
-from .views import signup_view, login_view, logout_view, UsersListView, UsersDetailView, activate, signup
+from .views import  login_view, logout_view, UsersListView, UsersDetailView, activate, signup
 
 
 app_name = 'users'

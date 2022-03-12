@@ -21,26 +21,28 @@ from django.http import HttpResponse
 def profile_view(request):
     return render(request, 'profile.html')
 
-def signup_view(request):
-    form = SignUpForm(request.POST)
-    if form.is_valid():
-        form.save()
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password1')
-        user = authenticate(email=email, password=password)
-        login(request, user)
-        return redirect(reverse('pages:home'))
-    else:
-        form = SignUpForm()
-    return render(request, 'users/signup.html', {'form': form})
+# def signup_view(request):
+#     form = SignUpForm(request.POST)
+#     if form.is_valid():
+#         form.save()
+#         email = form.cleaned_data.get('email')
+#         password = form.cleaned_data.get('password1')
+#         user = authenticate(email=email, password=password)
+#         login(request, user)
+#         return redirect(reverse('pages:home'))
+#     else:
+#         form = SignUpForm()
+#     return render(request, 'users/signup.html', {'form': form})
 
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            print(sys.stderr, 'in sign up view.....')
             user = form.save(commit=False)
             user.is_active = False
             user.save()
+
             current_site = get_current_site(request)
             mail_subject = 'Activate your blog account.'
             message = render_to_string('users/acc_active_email.html', {
