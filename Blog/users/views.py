@@ -76,8 +76,9 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 # /////////////////////////////////////////////////////////////////////
 def login_view(request):
-    redirect_to = request.POST.get('next', '/')
     form = LoginForm(data = request.POST)
+    print(sys.stderr, 'next')
+    print(sys.stderr, next)
     if form.is_valid():
         email = form.cleaned_data.get('email')
         print(sys.stderr, 'user.email')
@@ -89,7 +90,14 @@ def login_view(request):
         if user is not None:
             print(sys.stderr, user.email)
             login(request, user, backend='users.backends.CustomUserBackend')
-            return redirect(redirect_to)  
+            
+            path_redirect = request.get_full_path().split('?next=',1)                   #good piece of code
+            if '?next=' in request.get_full_path():# Redirecting After Login 
+                return redirect(path_redirect[1])
+            else:
+                return redirect('pages:home')
+                
+                 
         return render(request, 'users/login.html', {'form': form, 'error_message': 'Email or Password is wrong!'})
     else:
         form = LoginForm()

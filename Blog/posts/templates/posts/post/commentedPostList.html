@@ -1,0 +1,51 @@
+{% extends "posts/base.html" %}
+{% load posts_tags %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block sidebar %}  {% endblock %}  
+
+{% block content %}
+
+    {% for comment in comments %}
+    <div class="border border-info p-1 m-1">
+        <div class="border p-1 m-3 col-11">
+            <h4>
+            <a href="{{ comment.post.get_absolute_url }}">
+                {{ comment.post.title }}
+            </a>
+            </h4>
+            Tags:
+            {% for tag in comment.post.tags.all %}
+                <a href="{% url "posts:post_list_by_tag" tag.slug %}">
+                {{ tag.name }}
+                </a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            </p>
+            <p class="date">
+            Published {{ comment.post.publish }} by {{ comment.post.author }}
+            </p>
+            {{ post.body| markdown | truncatewords:30 }}
+        </div>
+        <div class="card p-1 m-3 col-11">
+            <div class="card-body">
+            {{ comment.body | markdown }}
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-row align-items-center">
+
+                <!-- <p class="small mb-0 ms-2"> Comment {{ forloop.counter }} by {{ comment.name }}</p> -->
+                <p class="small mb-0 ms-2">{{ comment.email }}</p>
+                </div>  
+                <div class="d-flex flex-row align-items-center">
+                <p class="small text-muted mb-0">  {{ comment.created }}</p>
+                </div>            
+            </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+
+
+{% endblock %}

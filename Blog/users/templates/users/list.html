@@ -4,17 +4,26 @@
 {% block title %}My Blog{% endblock %}
 
 {% block content %}
-  <h1>My Blog</h1>
-  {% for CustomUser in CustomUsers %}
-    <h2>
-      <a href="{% url "users:user" CustomUser.id %}">
-        {% if CustomUser.profile.first_name %}
-          {{ CustomUser.profile.first_name }} {{ CustomUser.profile.last_name }} 
-        {% else %}
-          {{ CustomUser.email }}
-        {% endif %}
-        date joined us : {{ CustomUser.date_joined }}
-      </a>
-  {% endfor %}
-  {% include "pagination.html" with page=page_obj %}
+
+<div class="container m-1">
+  <div class="col-10">
+        {% for CustomUser in CustomUsers %}
+        <div class="border p-1 m-3">
+          
+          <p>
+            {% if CustomUser.profile.first_name %}
+              {{ CustomUser.profile.first_name }}-{{ CustomUser.profile.last_name }}
+              <br><a href="{% url "users:user" CustomUser.id %}">{{ CustomUser.email }}</a>
+            {% else %}
+            <a href="{% url "users:user" CustomUser.id %}">
+            {{ CustomUser.email }}</a>
+            {% endif %}
+            <br>joined: {{ CustomUser.date_joined }}
+          </p>
+        </div>
+      {% endfor %}
+      {% include "pagination.html" with page=page_obj %}
+  </div>
+</div>
+
 {% endblock %}

@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 from django.views import View
 
+from users.models import CustomUser
 
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm, SearchForm, PostCreateForm
@@ -33,6 +34,30 @@ class PostListView(LoginRequiredMixin, ListView):
     paginate_by = 3
     template_name = 'posts/post/list.html'
 
+class UserPostListView(LoginRequiredMixin, ListView): 
+    """All post from a certain user"""
+    login_url = 'users:login'
+
+    def get_queryset(self):
+        user = CustomUser.objects.get(id=self.kwargs['user_id'])
+        return Post.published.filter(author=user)
+
+
+    context_object_name = 'posts'
+    paginate_by = 3
+    template_name = 'posts/post/commentedPostList.html'
+
+class UserCommentedPostListView(LoginRequiredMixin, ListView):
+    """All post Commented from a certain user"""
+    login_url = 'users:login'
+
+    def get_queryset(self):
+        user = CustomUser.objects.get(id=self.kwargs['user_id'])
+        return Comment.objects.filter(email=user.email)
+
+
+    context_object_name = 'comments'
+    template_name = 'posts/post/commentedPostList.html'
 
 @login_required
 def post_list(request):
@@ -52,17 +77,6 @@ def post_list(request):
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, status='published', publish__year=year, publish__month=month, publish__day=day , slug=post)
     
-    objects_list = post.comments.filter(active=True).order_by('id')
-    paginator = Paginator(objects_list, 4)
-    page = request.GET.get('page', 1)
-    try:
-        comments = paginator.page(page)
-    except PageNotAnInteger:
-        comments = paginator.page(1)
-    except EmptyPage:
-        comments = paginator.page(paginator.num_pages) # if out of the range deliver last page instead.
-    print(sys.stderr, page)
-
     new_comment = None
 
     if request.method == 'POST':
@@ -75,6 +89,19 @@ def post_detail(request, year, month, day, post):
             new_comment.save()
     else:
         comment_form = CommentForm()
+
+    objects_list = post.comments.filter(active=True).order_by('id')
+    paginator = Paginator(objects_list, 4)
+    page = request.GET.get('page', 1)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages) # if out of the range deliver last page instead.
+    print(sys.stderr, page)
+
+    
     post_tags_ids = post.tags.values_list('id', flat=True)
     similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
     similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
