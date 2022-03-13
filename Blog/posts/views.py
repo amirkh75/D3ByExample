@@ -20,6 +20,7 @@ from .forms import EmailPostForm, CommentForm, SearchForm, PostCreateForm
 
 
 class PostListView(LoginRequiredMixin, ListView):
+    """show list of all posts, order by date created."""
     login_url = 'users:login'
 
     def get_queryset(self):
@@ -34,8 +35,9 @@ class PostListView(LoginRequiredMixin, ListView):
     paginate_by = 3
     template_name = 'posts/post/list.html'
 
+
 class UserPostListView(LoginRequiredMixin, ListView): 
-    """All post from a certain user"""
+    """show all post from a certain user, order by date created."""
     login_url = 'users:login'
 
     def get_queryset(self):
@@ -47,8 +49,9 @@ class UserPostListView(LoginRequiredMixin, ListView):
     paginate_by = 3
     template_name = 'posts/post/list.html'
 
+
 class UserCommentedPostListView(LoginRequiredMixin, ListView):
-    """All post Commented from a certain user"""
+    """All post Commented from a certain user, order by date created."""
     login_url = 'users:login'
 
     def get_queryset(self):
@@ -60,8 +63,10 @@ class UserCommentedPostListView(LoginRequiredMixin, ListView):
     paginate_by = 3
     template_name = 'posts/post/commentedPostList.html'
 
+
 @login_required
 def post_list(request):
+    """Not used."""
     objects_list = Post.published.all()
     paginator = Paginator(objects_list, 6)
     page = request.GET.get('page')
@@ -76,6 +81,7 @@ def post_list(request):
 
 @login_required
 def post_detail(request, year, month, day, post):
+    """show post detail base on post slug(post=>slug) and date created, SEO friendly, and show comments on this post."""
     post = get_object_or_404(Post, status='published', publish__year=year, publish__month=month, publish__day=day , slug=post)
     
     new_comment = None
@@ -111,9 +117,9 @@ def post_detail(request, year, month, day, post):
                       'similar_posts': similar_posts,'page': page}) 
 
 
-
 @login_required
 def post_share(request, post_id):
+    """post share by site, and contain user comment for reciver."""
     post = get_object_or_404(Post, id=post_id, status='published')
     sent = False
 
@@ -132,9 +138,9 @@ def post_share(request, post_id):
     return render(request, 'posts/post/share.html',{'post': post, 'form': form, 'sent':sent})
 
 
-
 @login_required
 def post_search(request):
+    """Trigram post search base on postgres ability."""
     form = SearchForm()
     query = None
     results = []
