@@ -53,7 +53,7 @@ class UserCommentedPostListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         user = CustomUser.objects.get(id=self.kwargs['user_id'])
-        return Comment.objects.filter(email=user.email)
+        return Comment.objects.filter(author=user)
 
 
     context_object_name = 'comments'
@@ -84,8 +84,7 @@ def post_detail(request, year, month, day, post):
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
-            new_comment.name = request.user.profile.first_name
-            new_comment.email = request.user.email
+            new_comment.author = request.user
             new_comment.post = post
             new_comment.save()
     else:

@@ -6,7 +6,7 @@ import sys
 
 
 from .forms import SignUpForm, LoginForm
-from .models import CustomUser
+from .models import CustomUser, Profile
 
 
 from django.core.mail import EmailMessage
@@ -18,23 +18,9 @@ from .tokens import account_activation_token
 from django.http import HttpResponse
 
 
-def profile_view(request):
-    return render(request, 'profile.html')
-
-# def signup_view(request):
-#     form = SignUpForm(request.POST)
-#     if form.is_valid():
-#         form.save()
-#         email = form.cleaned_data.get('email')
-#         password = form.cleaned_data.get('password1')
-#         user = authenticate(email=email, password=password)
-#         login(request, user)
-#         return redirect(reverse('pages:home'))
-#     else:
-#         form = SignUpForm()
-#     return render(request, 'users/signup.html', {'form': form})
 
 def signup(request):
+    """Signup logic with email verification needs to set user active."""
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -43,6 +29,8 @@ def signup(request):
             user.is_active = False
             user.save()
 
+            """Email veryfication for user signup to be active and ability to be login."""
+            """Active in activate function down here."""
             current_site = get_current_site(request)
             mail_subject = 'Activate your blog account.'
             message = render_to_string('users/acc_active_email.html', {
@@ -63,6 +51,7 @@ def signup(request):
 
 
 def activate(request, uidb64, token):
+    """Active with unique link that emailed to user."""
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = CustomUser.objects.get(pk=uid)
@@ -76,23 +65,19 @@ def activate(request, uidb64, token):
         #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
-# /////////////////////////////////////////////////////////////////////
+
 def login_view(request):
+    """Login view , just active users can login."""
     form = LoginForm(data = request.POST)
-    print(sys.stderr, 'next')
-    print(sys.stderr, next)
     if form.is_valid():
         email = form.cleaned_data.get('email')
-        print(sys.stderr, 'user.email')
-        print(sys.stderr, email)
         password = form.cleaned_data.get('password')
-        print(sys.stderr, 'user.password')
-        print(sys.stderr, password)
         user = authenticate(email=email, password=password)
-        if user is not None:
-            print(sys.stderr, user.email)
+        if user is not None: # if user exist
+            #print(sys.stderr, user.email)
             login(request, user, backend='users.backends.CustomUserBackend')
-            
+
+            """if user redirect to login view from anothe view goes back to his/her way after login"""
             path_redirect = request.get_full_path().split('?next=',1)                   #good piece of code
             if '?next=' in request.get_full_path():# Redirecting After Login 
                 return redirect(path_redirect[1])
@@ -108,11 +93,13 @@ def login_view(request):
 
 
 def logout_view(request):
+    """logout view, redirect to login view"""
     logout(request)
     return redirect(reverse('users:login'))
 
 
 class UsersListView(ListView):
+    """Show list of all users."""
 
     queryset =CustomUser.objects.all()
     context_object_name = 'CustomUsers'
@@ -120,8 +107,22 @@ class UsersListView(ListView):
     template_name = 'users/list.html'
 
 
-class UsersDetailView(DetailView):
+class UsersDetailView(DetailView): #todo  change to profile.
+    """Show user detail, but can be user profile."""
+
+    model = CustomUser
 
     context_object_name = 'CustomUser'
     queryset = CustomUser.objects.all()
     template_name = 'users/detail.html'
+
+
+
+class UsersProfileDetailView(DetailView):
+    """Show user profile."""
+    
+    model = Profile
+
+    context_object_name = 'Profile'
+    queryset = Profile.objects.all()
+    template_name = 'users/profile.html'

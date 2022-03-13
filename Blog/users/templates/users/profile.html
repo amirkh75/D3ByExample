@@ -1,0 +1,88 @@
+{% extends "posts/base.html" %}
+{% load posts_tags %}
+
+{% block title %}{{ Profile.user.email }} Profile{% endblock %}
+
+{% block content %}
+    <h1>Profile</h1>
+    <h2> {{ Profile.first_name }} {{ Profile.last_name }}</h2>
+    <p> {{ Profile.user.email }} - date joined us : {{ Profile.user.date_joined }}</p>
+    <p> {{ Profile.bio }}</p>
+{% endblock %}
+
+
+{% block content2 %}
+<div class="container">
+    <div class="row py-3">
+        <div class="col-6">
+            <p>{{ Profile.user.blog_posts.all | length }} <a href="{% url "posts:user_post_list" Profile.user.id %}">posts</a></p>
+            {% for post in Profile.user.blog_posts.all %}
+                <div class="border border-info p-1 m-1">
+                    <div class="border p-1 m-3 col-11">
+                    <h4>
+                        <a href="{{ post.get_absolute_url }}">
+                        {{ post.title }}
+                        </a>
+                    </h4>
+                        Tags:
+                        {% for tag in post.tags.all %}
+                        <a href="{% url "posts:post_list_by_tag" tag.slug %}">
+                            {{ tag.name }}
+                        </a>
+                        {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="date">
+                        Published {{ post.publish }} by {{ post.author }}
+                    </p>
+                    {{ post.body| markdown | truncatewords:30 }}
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        </div>
+        <div class="col-6">
+            <p>{{ Profile.user.blog_comments.all | length }} <a href="{% url "posts:user_commented_post_list" Profile.user.id %}">comments</a></p>
+            {% for comment in Profile.user.blog_comments.all %}
+                <div class="border border-info p-1 m-1">
+                    <div class="border p-1 m-3 col-11">
+                        <h4>
+                        <a href="{{ comment.post.get_absolute_url }}">
+                            {{ comment.post.title }}
+                        </a>
+                        </h4>
+                        Tags:
+                        {% for tag in comment.post.tags.all %}
+                            <a href="{% url "posts:post_list_by_tag" tag.slug %}">
+                            {{ tag.name }}
+                            </a>
+                            {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        </p>
+                        <p class="date">
+                        Published {{ comment.post.publish }} by {{ comment.author.email }}
+                        </p>
+                        {{ post.body| markdown | truncatewords:30 }}
+                    </div>
+                    <div class="card p-1 m-3 col-11">
+                        <div class="card-body">
+                        {{ comment.body | markdown }}
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+
+                            <!-- <p class="small mb-0 ms-2"> Comment {{ forloop.counter }} by {{ comment.name }}</p> -->
+                            <p class="small mb-0 ms-2">{{ comment.author.email }}</p>
+                            </div>  
+                            <div class="d-flex flex-row align-items-center">
+                            <p class="small text-muted mb-0">  {{ comment.created }}</p>
+                            </div>            
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -24,7 +24,7 @@
             {% endfor %}
             </p>
             <p class="date">
-            Published {{ comment.post.publish }} by {{ comment.post.author }}
+            Published {{ comment.post.publish }} by {{ comment.author.email }}
             </p>
             {{ post.body| markdown | truncatewords:30 }}
         </div>
@@ -35,7 +35,7 @@
                 <div class="d-flex flex-row align-items-center">
 
                 <!-- <p class="small mb-0 ms-2"> Comment {{ forloop.counter }} by {{ comment.name }}</p> -->
-                <p class="small mb-0 ms-2">{{ comment.email }}</p>
+                <p class="small mb-0 ms-2">{{ comment.author.email }}</p>
                 </div>  
                 <div class="d-flex flex-row align-items-center">
                 <p class="small text-muted mb-0">  {{ comment.created }}</p>

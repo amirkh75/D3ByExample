@@ -40,7 +40,7 @@
             <div class="d-flex flex-row align-items-center">
 
               <!-- <p class="small mb-0 ms-2"> Comment {{ forloop.counter }} by {{ comment.name }}</p> -->
-              <p class="small mb-0 ms-2">{{ comment.email }}</p>
+              <p class="small mb-0 ms-2"><a href="{% url "users:profile" comment.author.id %}">{{ comment.author.email }}</a></p>
             </div>  
             <div class="d-flex flex-row align-items-center">
               <p class="small text-muted mb-0">  {{ comment.created }}</p>

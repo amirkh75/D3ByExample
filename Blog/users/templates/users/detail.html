@@ -8,6 +8,7 @@
     <h2> {{ CustomUser.profile.first_name }} {{ CustomUser.profile.last_name }}</h2>
     <p> {{ CustomUser.email }} - date joined us : {{ CustomUser.date_joined }}</p>
     <p> {{ CustomUser.profile.bio }}</p>
+    <p>user profile<a href="{% url "users:profile" CustomUser.id %}">profile</a></p>
     <a href="{% url "posts:user_post_list" CustomUser.id %}">posts</a>-
     <a href="{% url "posts:user_commented_post_list" CustomUser.id %}">comments</a>
 {% endblock %}
