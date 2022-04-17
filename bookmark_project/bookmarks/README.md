@@ -14,6 +14,14 @@ I also add docker to the project on my own{ [some help](https://testdriven.io/bl
     1.create virtual env, install django and start django by create config(django-admin.py startproject).
 
     2.add Dockerfile, requirements.txt, docker-compose.yml , .env.dev and move allowed hosts, security key and Debug to env.dev for just development uses.
+    -use docker-compose to manage dockerfile.
 
-    3.
+    3.docker-compose build and up -d
+
+    4. use postgres as database(add service-db to dockerfile,
+                                env, DATABASE(setting.py), requirements.txt and
+                                postgresql-dev gcc python3-dev musl-dev to docker-compose)
+    
+
+
 }
