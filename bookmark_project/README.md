@@ -18,10 +18,10 @@ I also add docker to the project on my own{ [some help](https://testdriven.io/bl
 
     3.docker-compose build and up -d
 
-    4. use postgres as database(add service-db to dockerfile,
-                                env, DATABASE(setting.py), requirements.txt and
-                                postgresql-dev gcc python3-dev musl-dev to docker-compose)
-    
-
+    4. use postgres as database:
+        add service-db to dockerfile,
+        env, DATABASE(setting.py), requirements.txt and
+        postgresql-dev gcc python3-dev musl-dev to docker-compose.
+        and then  to verify that Postgres is healthy before applying the migrations and running the Django development server add entrypoint.sh.
 
 }
