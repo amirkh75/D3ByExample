@@ -24,4 +24,16 @@ I also add docker to the project on my own{ [some help](https://testdriven.io/bl
         postgresql-dev gcc python3-dev musl-dev to docker-compose.
         and then  to verify that Postgres is healthy before applying the migrations and running the Django development server add entrypoint.sh.
 
+    5.add Gunicorn, a production-grade WSGI server:
+        add to requirements
+        since we use it just for production we create docker-compose.prod.yml and .env.prod and .env.prod.db for product mode envs.
+
+    6.production Dockerfile:
+        add entrypoint.prod.sh, and Dockerfile.prod, .flake8
+
+    7.add Nginx into the mix to act as a reverse proxy for Gunicorn to handle client requests as well as serve up static files.
+      create nginx directory(dockerfile and nginx.conf), and add docker-compose.prod.
+
+    8.load Static Files and Media Files with nginx on production mode.
+
 }
