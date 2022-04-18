@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #local
+    'account', # docker-compose exec web python manage.py startapp upload.
 ]
 
 MIDDLEWARE = [

@@ -37,3 +37,9 @@ I also add docker to the project on my own{ [some help](https://testdriven.io/bl
     8.load Static Files and Media Files with nginx on production mode.
 
 }
+
+start chapter 4 by creating the account app.
+
+With this command : docker-compose exec web python manage.py startapp account
+use django user model(django.contrib.auth) and authentication system.
+write login.
