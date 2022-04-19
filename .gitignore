@@ -3,6 +3,8 @@ staticfiles-cdn/
 .DS_Store
 bin/
 
+.*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
