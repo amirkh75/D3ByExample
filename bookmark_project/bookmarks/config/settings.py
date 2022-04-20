@@ -34,7 +34,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 """
 The django.contrib.admin module includes some of the authentication templates
-that are used for the administration site. You have placed the account application at
+that are used ((for the administration site)). You have placed the account application at
 the top of the INSTALLED_APPS setting so that Django uses your templates by default
 instead of any authentication templates defined in other applications.
 """
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,3 +1,7 @@
 1.change postgres port.
 
-enginx  in dickerfile.prod ports how connected.
+2.Nginx  in dockerfile.prod ports how connected.
+
+3.django admin not using my login template.
+
+4.django admin login template not changes.
