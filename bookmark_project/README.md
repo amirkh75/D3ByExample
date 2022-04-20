@@ -43,3 +43,5 @@ start chapter 4 by creating the account app.
 With this command : docker-compose exec web python manage.py startapp account
 use django user model(django.contrib.auth) and authentication system.
 write login.
+
+Using Django authentication views.

@@ -20,10 +20,26 @@ def user_login(request):
                     login(request, user)
                     return HttpResponse('Authenticated successfully')
                 else:
-                    return HttpResponse('Disabledm account')
+                    return HttpResponse('Disabled account')
             else:
                 return HttpResponse('Invalid login')
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
+
+
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
+def dashboard(request):
+    """You decorate your view with the login_required decorator of the authentication
+        framework. The login_required decorator checks whether the current user is
+        authenticated. If the user is authenticated, it executes the decorated view; if the
+        user is not authenticated, it redirects the user to the login URL with the originally
+        requested URL as a GET parameter named next."""
+    return render(request,
+                 'account/dashboard.html',
+                 {'section': 'dashboard'})
 

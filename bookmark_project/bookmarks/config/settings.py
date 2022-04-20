@@ -31,7 +31,19 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # Application definition
 
+
+"""
+The django.contrib.admin module includes some of the authentication templates
+that are used for the administration site. You have placed the account application at
+the top of the INSTALLED_APPS setting so that Django uses your templates by default
+instead of any authentication templates defined in other applications.
+"""
+
 INSTALLED_APPS = [
+    # local
+    'account', # docker-compose exec web python manage.py startapp upload.
+
+    # base django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,8 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    #local
-    'account', # docker-compose exec web python manage.py startapp upload.
 ]
 
 MIDDLEWARE = [
@@ -137,3 +147,9 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
