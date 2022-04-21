@@ -39,4 +39,7 @@ urlpatterns = [
     
     # registration
     path('register/', views.register, name='register'),
+
+    # edit the user object and profile
+    path('edit/', views.edit, name='edit'),
 ]

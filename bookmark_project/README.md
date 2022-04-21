@@ -46,4 +46,13 @@ write login.
 
 Using Django authentication views.resetting password with email(on consol).
 
-User registration and user profiles
+User registration and user profiles(Extending the user model).add picture with pillow.
+
+
+Using the messages framework
+    The messages framework is located at django.contrib.messages and is included
+    in the default INSTALLED_APPS list of the settings.py file when you create new
+    projects using python manage.py startproject. You will note that your settings
+    file contains a middleware named django.contrib.messages.middleware.
+    MessageMiddleware in the MIDDLEWARE settings.
+    they are displayed in the next request from the user.
