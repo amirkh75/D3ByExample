@@ -56,3 +56,5 @@ Using the messages framework
     file contains a middleware named django.contrib.messages.middleware.
     MessageMiddleware in the MIDDLEWARE settings.
     they are displayed in the next request from the user.
+
+Building a custom authentication backend.
