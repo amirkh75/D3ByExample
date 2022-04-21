@@ -44,4 +44,6 @@ With this command : docker-compose exec web python manage.py startapp account
 use django user model(django.contrib.auth) and authentication system.
 write login.
 
-Using Django authentication views.
+Using Django authentication views.resetting password with email(on consol).
+
+User registration and user profiles
