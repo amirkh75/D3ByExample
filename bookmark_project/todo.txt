@@ -7,4 +7,9 @@
 4.django admin login template not changes.  
 
 
-work with Nginx
+5.work with Nginx on production.
+
+6.Twitter login not work currectly.
+
+
+
