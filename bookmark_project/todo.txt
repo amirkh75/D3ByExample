@@ -4,4 +4,7 @@
 
 3.django admin not using my login template.
 
-4.django admin login template not changes.
+4.django admin login template not changes.  
+
+
+work with Nginx
