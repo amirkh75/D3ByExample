@@ -5,6 +5,7 @@ A social application (image sharing platform), which users are able to bookmark 
 Users can like/unlike, follow and see activity of his/her following users.
 
 Chapter 4 topics:
+
 1.Using the Django authentication framework.
 2.Creating user registration views.
 3.Extending the user model with a custom profile model.
@@ -61,4 +62,6 @@ Building a custom authentication backend.
 
 
 Adding social authentication to your site. add 0.0.0.0:8000 to runserver_plus add twitter and google authentication.
+
+Chapter 5 topics:
 
