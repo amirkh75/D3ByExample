@@ -7,21 +7,21 @@ from django.urls import reverse
 class Image(models.Model):
     """image model for save the images that user archive."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-        related_name='images_created',
-        on_delete=models.CASCADE)
+                            related_name='images_created',
+                            on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200,
-        blank=True)
+                            blank=True)
     url = models.URLField()
     image = models.ImageField(upload_to='images/%Y/%m/%d/%H/%M/%S/')
     description = models.TextField(blank=True)
     created = models.DateField(auto_now_add=True,
-        db_index=True)
+                               db_index=True)
 
     # Creating many-to-many relationships
     users_like = models.ManyToManyField(settings.AUTH_USER_MODEL,
-        related_name='images_liked',
-        blank=True)
+                                        related_name='images_liked',
+                                        blank=True)
 
     def __str__(self):
         return self.title
