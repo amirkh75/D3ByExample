@@ -66,4 +66,24 @@ Adding social authentication to your site. add 0.0.0.0:8000 to runserver_plus ad
 
 Chapter 5 topics:
 
+Building a bookmarklet with jQuery
+A bookmarklet is a bookmark stored in a web browser that contains JavaScript
+code to extend the browser's functionality. When you click on the bookmark, the
+JavaScript code is executed on the website being displayed in the browser. This is
+very useful for building tools that interact with other websites.
+
+Now let's add AJAX actions to your application. AJAX comes from Asynchronous
+JavaScript and XML, encompassing a group of techniques to make asynchronous
+HTTP requests.
+
+When you submit forms, you can use the {% csrf_token %}
+template tag to send the token along with the form. However, it is a bit inconvenient
+for AJAX requests to pass the CSRF token as POST data with every POST request.
+Therefore, Django allows you to set a custom X-CSRFToken header in your AJAX
+requests with the value of the CSRF token. This enables you to set up jQuery or any
+other JavaScript library to automatically set the X-CSRFToken header in every request.
+
+add images app and jquery and especially ajax to this project for asynchronous post requests.
+
+
 
