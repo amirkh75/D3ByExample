@@ -12,9 +12,15 @@
 6.Twitter login not work currently.
 
 
+.
 
-CHAPTER 5 
+CHAPTER.
+ 5 
+.
 
-7.use ajax for number of like and user picture.
+7.use ajax for number of like and user picture..
+
+.
 
 8.ajax list view not scroll in big screens.
+

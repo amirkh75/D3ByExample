@@ -166,3 +166,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '755438985152-ffj1k8q604t9hvpf4mp0i39dagqt9a1q.a
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Consumer Secret
 
 
+# Another way to specify the URL for a model is by adding the ABSOLUTE_URL_OVERRIDES setting to your project.
+from django.urls import reverse_lazy
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail',
+                                        args=[u.username])
+}

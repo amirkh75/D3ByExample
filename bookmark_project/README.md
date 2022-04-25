@@ -87,3 +87,9 @@ add images app and jquery and especially ajax to this project for asynchronous p
 
 
 
+Chapter 6 topics:
+
+Building a follow system.
+
+Building an AJAX view to follow users.
+
