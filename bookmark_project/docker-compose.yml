@@ -13,6 +13,13 @@ services:
       - ./.env.dev
     depends_on:
       - db
+      - redis
+    links:
+      - db
+      - redis
+    environment:
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
   db:
     image: postgres:13.0-alpine
     volumes:
@@ -20,10 +27,21 @@ services:
     environment:
       - POSTGRES_USER=hello_django
       - POSTGRES_PASSWORD=hello_django
-      - POSTGRES_DB=hello_django_dev 
+      - POSTGRES_DB=hello_django_dev
+  redis:
+    image: redis
+    command: redis-server
+    expose:
+      - '6379'
+    ports:
+      - '127.0.0.1:6379:6379/tcp'
+    hostname: localhost
+    volumes: 
+      - redisdata:/data
     
 
 
 volumes:
   postgres_data:
+  redisdata:
 

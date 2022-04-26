@@ -7,6 +7,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
 
+from actions.models import Action
+from actions.utils import create_action
 from .forms import LoginForm, UserRegistrationForm, \
                     UserEditForm, ProfileEditForm
 from .models import Profile
@@ -46,9 +48,29 @@ def dashboard(request):
         authenticated. If the user is authenticated, it executes the decorated view; if the
         user is not authenticated, it redirects the user to the login URL with the originally
         requested URL as a GET parameter named next."""
+    # Display all actions by default
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id',
+                                                flat=True)
+    if following_ids:
+        # If user is following others, retrieve only their actions
+        actions = actions.filter(user_id__in=following_ids)
+
+    actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
+    """
+        select_related() will help you to boost performance for retrieving related objects
+        in one-to-many relationships. However, select_related() doesn't work for many-
+        to-many or many-to-one relationships (ManyToMany or reverse ForeignKey fields).
+        Django offers a different QuerySet method called prefetch_related that works
+        for many-to-many and many-to-one relationships in addition to the relationships
+        supported by select_related(). The prefetch_related() method performs
+        a separate lookup for each relationship and joins the results using Python. This
+        method also supports the prefetching of GenericRelation and GenericForeignKey.
+    """
     return render(request,
-                 'account/dashboard.html',
-                 {'section': 'dashboard'})
+                'account/dashboard.html',
+                {'section': 'dashboard',
+                'actions': actions})
 
 
 def register(request):
@@ -64,6 +86,7 @@ def register(request):
             new_user.save()
             # Create the user profile
             Profile.objects.create(user=new_user)
+            create_action(new_user, 'has created an account')
             return render(request,
                         'account/register_done.html',
                         {'new_user': new_user})
@@ -142,9 +165,11 @@ def user_follow(request):
             if action == 'follow':
                 Contact.objects.get_or_create(user_from=request.user,
                                               user_to=user)
+                create_action(request.user, 'is following', user)
             else:
                 Contact.objects.filter(user_from=request.user,
                                        user_to=user).delete()
+                # remove action.
             return JsonResponse({'status':'ok'})
         except User.DoesNotExist:
             return JsonResponse({'status':'error'})

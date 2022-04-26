@@ -93,3 +93,13 @@ Building a follow system.
 
 Building an AJAX view to follow users.
 
+Building a generic activity stream application (add actions app).
+
+Adding generic relations to your models.
+
+Optimizing QuerySets that involve related objects.
+
+Using signals for denormalizing counts.
+
+Using Redis for storing item views
+

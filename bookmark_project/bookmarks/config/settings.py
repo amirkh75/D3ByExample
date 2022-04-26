@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
     # local
     'images',
+    'actions',
 ]
 
 MIDDLEWARE = [
@@ -172,3 +173,10 @@ ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('user_detail',
                                         args=[u.username])
 }
+
+
+#REDIS FOR VIEWS
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0
+

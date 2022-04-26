@@ -24,3 +24,5 @@ CHAPTER.
 
 8.ajax list view not scroll in big screens.
 
+9.remove user action at unlike line 67 image_like views and line 151 form account user_follow views.
+
